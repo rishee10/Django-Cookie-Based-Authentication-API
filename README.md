@@ -29,7 +29,7 @@ A secure authentication system built with **Django**, **Django REST Framework (D
 - Auto CSRF token generation via Swagger UI
 - Logout with server-side token invalidation
 - Swagger UI for interactive API testing
-- Bonus HTML + JS frontend for testing auth flow
+- Bonus HTML frontend for testing auth flow
 
 ---
 
@@ -81,8 +81,8 @@ myproject/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/rishee10/Django-Cookie-Based-Authentication-API.git
+cd Django-Cookie-Based-Authentication-API
 ```
 
 ### 2. Create and Activate Virtual Environment
