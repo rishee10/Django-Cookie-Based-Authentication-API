@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auth Demo</title>
+  <style>
+    body { font-family: sans-serif; max-width: 480px; margin: 60px auto; padding: 0 20px; }
+    input { display: block; width: 100%; margin: 8px 0; padding: 8px; box-sizing: border-box; }
+    button { padding: 9px 18px; margin: 6px 4px 6px 0; cursor: pointer; }
+    #output { background: #f4f4f4; padding: 12px; margin-top: 16px; white-space: pre-wrap; border-radius: 4px; }
+    h3 { margin-top: 28px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <h2>Auth Demo</h2>
+
+  <h3>Register</h3>
+  <input id="reg-email"    type="email"    placeholder="Email" />
+  <input id="reg-password" type="password" placeholder="Password" />
+  <button onclick="register()">Register</button>
+
+  <h3>Verify OTP</h3>
+  <input id="verify-email" type="email" placeholder="Email" />
+  <input id="verify-otp"   type="text"  placeholder="OTP Code" />
+  <button onclick="verifyOTP()">Verify</button>
+
+  <h3>Login</h3>
+  <input id="login-email"    type="email"    placeholder="Email" />
+  <input id="login-password" type="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
+
+  <h3>Actions</h3>
+  <button onclick="getMe()">Get My Details</button>
+  <button onclick="logout()">Logout</button>
+
+  <div id="output">Response will appear here...</div>
+
+  <script>
+    const out = document.getElementById('output');
+    const show = (data) => out.textContent = JSON.stringify(data, null, 2);
+
+    function getCookie(name) {
+      return document.cookie.split('; ').find(r => r.startsWith(name + '='))?.split('=')[1] || '';
+    }
+
+    async function api(url, method = 'GET', body = null) {
+      const opts = {
+        method,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'),
+        },
+      };
+      if (body) opts.body = JSON.stringify(body);
+      const res = await fetch(url, opts);
+      return res.json();
+    }
+
+    async function register() {
+      const data = await api('/api/register/', 'POST', {
+        email: document.getElementById('reg-email').value,
+        password: document.getElementById('reg-password').value,
+      });
+      show(data);
+    }
+
+    async function verifyOTP() {
+      const data = await api('/api/register/verify', 'POST', {
+        email: document.getElementById('verify-email').value,
+        otp:   document.getElementById('verify-otp').value,
+      });
+      show(data);
+    }
+
+    async function login() {
+      const data = await api('/api/login/', 'POST', {
+        email:    document.getElementById('login-email').value,
+        password: document.getElementById('login-password').value,
+      });
+      show(data);
+    }
+
+    async function getMe() {
+      const data = await api('/api/me/');
+      show(data);
+    }
+
+    async function logout() {
+      const data = await api('/api/logout/', 'POST');
+      show(data);
+    }
+  </script>
+</body>
+</html>
