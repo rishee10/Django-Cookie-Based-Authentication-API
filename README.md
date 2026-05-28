@@ -17,7 +17,6 @@ A secure authentication system built with **Django**, **Django REST Framework (D
 - [Testing the API](#testing-the-api)
 - [Security Details](#security-details)
 - [Bonus Frontend](#bonus-frontend)
-- [Common Errors & Fixes](#common-errors--fixes)
 
 ---
 
