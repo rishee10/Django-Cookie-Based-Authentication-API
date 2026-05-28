@@ -1,6 +1,6 @@
 # Django Cookie-Based Authentication API
 
-A secure authentication system built with **Django**, **Django REST Framework (DRF)**, and **Swagger (drf-yasg)**. It uses **cookie-based token authentication** with CSRF protection, OTP email verification, and fully documented REST APIs.
+A secure authentication system built with **Django**, **Django REST Framework (DRF)**, and **Swagger**. It uses **cookie-based token authentication** with CSRF protection, OTP email verification, and fully documented REST APIs.
 
 ---
 
@@ -137,8 +137,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST         = 'smtp.gmail.com'
 # EMAIL_PORT         = 587
 # EMAIL_USE_TLS      = True
-# EMAIL_HOST_USER    = 'your@gmail.com'
-# EMAIL_HOST_PASSWORD = 'your_app_password'
+# EMAIL_HOST_USER    = 'your_gamil@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Your_App_Password'
 ```
 
 ---
@@ -167,8 +167,8 @@ Registers a new user and sends an OTP to the provided email.
 **Request Body:**
 ```json
 {
-  "email": "user@example.com",
-  "password": "yourpassword"
+  "email": "rishee1@example.com",
+  "password": "Rishee1"
 }
 ```
 
@@ -187,7 +187,7 @@ Verifies the OTP and activates the user account.
 **Request Body:**
 ```json
 {
-  "email": "user@example.com",
+  "email": "rishee1@example.com",
   "otp": "706586"
 }
 ```
@@ -214,8 +214,8 @@ Authenticates the user and sets an HTTP-only `auth_token` cookie.
 **Request Body:**
 ```json
 {
-  "email": "user@example.com",
-  "password": "yourpassword"
+  "email": "rishee1@example.com",
+  "password": "Rishee1"
 }
 ```
 
@@ -242,7 +242,7 @@ Returns the authenticated user's details. Requires valid `auth_token` cookie.
 ```json
 {
   "id": 1,
-  "email": "user@example.com",
+  "email": "rishee1@example.com",
   "is_active": true,
   "created_at": "2026-05-26T07:41:39Z"
 }
@@ -300,7 +300,7 @@ Every protected request goes through `CookieTokenAuthentication`:
 
 ## Testing the API
 
-### Option 1: Swagger UI (Recommended)
+### Option 1: Swagger UI
 
 1. Open `http://127.0.0.1:8000/swagger/`
 2. The CSRF token is **automatically set** as a cookie when Swagger loads
@@ -315,35 +315,6 @@ Every protected request goes through `CookieTokenAuthentication`:
 2. Use the form to register, verify OTP, login, get details, and logout
 3. Responses appear in the output box at the bottom
 
-### Option 3: curl
-
-```bash
-# Register
-curl -X POST http://127.0.0.1:8000/api/register/ \
-  -H "Content-Type: application/json" \
-  -d '{"email": "test@example.com", "password": "test123"}'
-
-# Verify OTP (replace 123456 with OTP from console)
-curl -X POST http://127.0.0.1:8000/api/register/verify \
-  -H "Content-Type: application/json" \
-  -d '{"email": "test@example.com", "otp": "123456"}'
-
-# Login (saves cookie to cookie.txt)
-curl -X POST http://127.0.0.1:8000/api/login/ \
-  -H "Content-Type: application/json" \
-  -H "X-CSRFToken: <your-csrf-token>" \
-  -c cookie.txt \
-  -d '{"email": "test@example.com", "password": "test123"}'
-
-# Get user details (sends saved cookie)
-curl -X GET http://127.0.0.1:8000/api/me/ \
-  -b cookie.txt
-
-# Logout
-curl -X POST http://127.0.0.1:8000/api/logout/ \
-  -b cookie.txt \
-  -H "X-CSRFToken: <your-csrf-token>"
-```
 
 ---
 
@@ -374,19 +345,6 @@ It automatically reads the `csrftoken` cookie and includes it in every request h
 
 ---
 
-## Common Errors & Fixes
-
-| Error | Cause | Fix |
-|---|---|---|
-| `Token has no attribute 'objects'` | `rest_framework.authtoken` missing from `INSTALLED_APPS` | Add it and run `python manage.py migrate` |
-| `CSRF token missing or incorrect` | Request sent without CSRF token | Open `/swagger/` first to get the cookie, then test |
-| `401 Unauthorized` on `/api/me/` | Not logged in or cookie missing | Call `/api/login/` first |
-| `OTP has expired` | More than 10 minutes passed | Register again with the same email |
-| `Email already registered` | Active account exists for that email | Use login instead, or a different email |
-| `Invalid credentials` | Wrong email or password | Check email and password |
-
----
-
 ## Requirements
 
 ```
@@ -400,20 +358,3 @@ Install with:
 ```bash
 pip install -r requirements.txt
 ```
-
----
-
-## Repository Checklist
-
-- [x] `README.md` with full setup and usage instructions
-- [x] `requirements.txt` with all dependencies
-- [x] Clean commit history tracking feature-by-feature progress
-- [x] All API endpoints implemented and tested
-- [x] Swagger UI with automatic CSRF token generation
-- [x] Cookie-based authentication (no Authorization headers)
-- [x] OTP email verification flow
-- [x] Bonus HTML frontend
-
----
-
-*Built as part of a Django API Implementation Assignment evaluating authentication, API documentation, and security best practices.*
